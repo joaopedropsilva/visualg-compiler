@@ -1,0 +1,7 @@
+algoritmo
+var 
+a inteiro
+a logico
+inicio
+  a = 20
+fimalgoritmo

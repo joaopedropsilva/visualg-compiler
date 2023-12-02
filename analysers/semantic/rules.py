@@ -6,5 +6,3 @@ class Rules:
         if variable not in variables.keys():
             raise e.VariableNotDeclared(variable)
 
-
-        

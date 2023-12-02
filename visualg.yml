@@ -1,0 +1,13 @@
+name: visualg
+channels:
+  - defaults
+dependencies:
+  - pandas
+  - matplotlib
+  - python=3.8
+  - jupyter
+  - plotly
+  - ipywidgets
+  - numpy
+  - scipy
+

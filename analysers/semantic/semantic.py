@@ -1,6 +1,6 @@
 from typing import List
 
-from analysers.semantic.rules import Rules as rl
+from analysers.semantic.rules import VariableRules as vr, LoopRules as lr
 from resources.keywords import types
 
 class Semantic:
@@ -14,11 +14,9 @@ class Semantic:
         self.__variable_declaration = False
         self.__last_variable = ""
 
-    def __analyse_variable_to_read(self, variable: str) -> None:
-        rl.exists(variable, self.__variables)
-        rl.is_readable(variable, self.__variables)
-
     def analyse(self) -> None:
+        self.__read_variables()
+
         program_start = self.__symbols.index(["inicio", "inicio"])
         program_end = self.__symbols.index(["fimalgoritmo", "fimalgoritmo"])
 
@@ -40,11 +38,15 @@ class Semantic:
                     pass
 
 
+    def __analyse_variable_to_read(self, variable: str) -> None:
+        vr.exists(variable, self.__variables)
+        vr.is_readable(variable, self.__variables)
+
     """
         Função que percorre uma lista de símbolos e popula 
         um dict com as variáveis válidas declaradas 
     """
-    def read_variables(self) -> None:
+    def __read_variables(self) -> None:
         for symbol in self.__symbols:
             lexem, token = symbol[0], symbol[1]
 
@@ -55,7 +57,7 @@ class Semantic:
                 match token:
                     case "var":
                         self.__last_variable = lexem
-                        rl.check_variable_redeclaration(lexem, self.__variables)
+                        vr.is_redeclaration(lexem, self.__variables)
 
                         self.__variables[lexem] = token
                     case _:

@@ -10,16 +10,35 @@ class Semantic:
 
     def __init__(self, symbols: List[List[str]]) -> None:
         self.__variables = {}
-        self.__last_variable = ""
-        self.__declaration = False
         self.__symbols = symbols
+        self.__variable_declaration = False
+        self.__last_variable = ""
+
+    def __analyse_variable_to_read(self, variable: str) -> None:
+        rl.exists(variable, self.__variables)
+        rl.is_readable(variable, self.__variables)
 
     def analyse(self) -> None:
-        #rl.variable_exists("r", { "a": "1"})
-        #rl.check_if_readable("a", { "a": "logico"})
-        #rl.check_expected_type("inteiro", "logico")
-        #rl.check_if_last_operand_greater_than_first("10", "5")
-        pass
+        program_start = self.__symbols.index(["inicio", "inicio"])
+        program_end = self.__symbols.index(["fimalgoritmo", "fimalgoritmo"])
+
+        program_symbols = self.__symbols[program_start + 1: program_end]
+
+        for pos, symbol in enumerate(program_symbols):
+            lexem, token = symbol[0], symbol[1]
+
+            match token:
+                case "leia":
+                    variable = program_symbols[pos + 2][0]
+
+                    self.__analyse_variable_to_read(variable)
+                case "var":
+                    pass
+                case "se":
+                    pass
+                case "para":
+                    pass
+
 
     """
         Função que percorre uma lista de símbolos e popula 
@@ -30,9 +49,9 @@ class Semantic:
             lexem, token = symbol[0], symbol[1]
 
             if lexem == "inicio":
-                self.__declaration = False
+                self.__variable_declaration = False
 
-            if self.__declaration:
+            if self.__variable_declaration:
                 match token:
                     case "var":
                         self.__last_variable = lexem
@@ -45,4 +64,4 @@ class Semantic:
                             self.__variables[self.__last_variable] = token
             else:
                 if lexem == "var":
-                    self.__declaration = True
+                    self.__variable_declaration = True

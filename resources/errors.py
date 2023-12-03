@@ -1,3 +1,10 @@
+class CannotRedeclareVariable(Exception):
+    def __init__(self, variable: str):
+        self.__variable = variable
+
+    def __str__(self):
+        return f'Não é possível redeclarar a variável "{self.__variable}"'
+
 class VariableNotDeclared(Exception):
     def __init__(self, variable: str):
         self.__variable = variable

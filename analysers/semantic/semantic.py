@@ -25,28 +25,34 @@ class Semantic:
 
         symbols = self.__symbols[program_start + 1: program_end]
 
-        pos_analysed = 0
-        while pos_analysed < len(symbols):
-            lexem, token = symbols[pos_analysed][0], symbols[pos_analysed][1]
+        pos = 0
+        while pos < len(symbols):
+            lexem, token = symbols[pos][0], symbols[pos][1]
 
             match token:
                 case "leia":
-                    variable_to_read = symbols[pos_analysed + 2][0]
-
-                    self.__analyse_variable_to_read(variable_to_read)
+                    pos = self.__analyse_variable_to_read(
+                            pos, symbols)
                 case "var":
-                    pos_analysed = \
-                        self.__analyse_variable_assignment(pos_analysed,
-                                                           symbols)
+                    pos = \
+                        self.__analyse_variable_assignment(
+                                pos, symbols)
                 case "se":
                     pass
                 case "para":
                     pass
 
 
-    def __analyse_variable_to_read(self, variable: str) -> None:
+    def __analyse_variable_to_read(self,
+                                   pos: int,
+                                   symbols: List[List[str]]) -> int:
+        variable_pos = pos + 2
+        variable = symbols[variable_pos][0]
+
         vr.exists(variable, self.__variables)
         vr.is_readable(variable, self.__variables)
+
+        return pos + 2
 
     def __validate_next_token(self,
                               pos: int,

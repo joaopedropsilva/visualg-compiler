@@ -35,8 +35,9 @@ class Semantic:
 
                     self.__analyse_variable_to_read(variable_to_read)
                 case "var":
-                    pos_analysed = self.__analyse_variable_assignment_by_context(
-                             pos_analysed, symbols)
+                    pos_analysed = \
+                        self.__analyse_variable_assignment(pos_analysed,
+                                                           symbols)
                 case "se":
                     pass
                 case "para":
@@ -54,6 +55,10 @@ class Semantic:
         lexem, token = symbols[pos][0], symbols[pos][1]
 
         if token == "var":
+            prev_token = symbols[pos - 1][1]
+            if  prev_token != "op_arit":
+                return pos
+
             vr.is_type_valid(self.__variables[lexem], expected_types)
 
         next_token_pos = pos + 1
@@ -67,7 +72,7 @@ class Semantic:
         return self.__validate_next_token(next_token_pos,
                                           symbols, expected_types)
 
-    def __analyse_variable_assignment_by_context(
+    def __analyse_variable_assignment(
             self,
             pos: int,
             symbols: List[List[str]]) -> int:
@@ -81,7 +86,6 @@ class Semantic:
 
         if "real" in allowed_types_in_expression:
             allowed_types_in_expression.append("inteiro")
-
 
         return self.__validate_next_token(next_token_pos,
                                           symbols,

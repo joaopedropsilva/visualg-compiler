@@ -3,7 +3,8 @@ from typing import List
 from analysers.semantic.rules import VariableRules as vr, LoopRules as lr
 from resources.keywords import (
     types,
-    valid_tokens_for_variable_assignment
+    valid_tokens_for_variable_assignment,
+    non_numeric_expressions,
 )
 
 class Semantic:
@@ -59,6 +60,15 @@ class Semantic:
                               symbols: List[List[str]],
                               expected_types: List[str]) -> int:
         lexem, token = symbols[pos][0], symbols[pos][1]
+
+        if token in non_numeric_expressions:
+            prev_token = symbols[pos - 1][1]
+            if prev_token == "atrib":
+                variable = symbols[pos - 2][0]
+                expected_type = [self.__variables[variable]]
+                received_type = "logico" if token != "msg" else "caractere"
+
+                vr.is_type_valid(received_type, expected_type)
 
         if token == "var":
             prev_token = symbols[pos - 1][1]

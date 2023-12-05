@@ -10,3 +10,9 @@ valid_tokens_for_variable_assignment = [
     "(",
     ")",
 ]
+
+non_numeric_expressions = [
+    "msg",
+    "verdadeiro",
+    "falso",
+]

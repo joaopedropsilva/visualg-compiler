@@ -1,3 +1,5 @@
+from typing import List
+
 class CannotRedeclareVariable(Exception):
     def __init__(self, variable: str):
         self.__variable = variable
@@ -21,17 +23,16 @@ class CannotReadFromBooleanType(Exception):
                 'de tipo "logico"'
 
 class InvalidTypeInExpression(Exception):
-    def __init__(self, received_type: str, expected_type: str):
+    def __init__(self, received_type: str, expected_types: List[str]):
         self.__type = received_type
-        self.__expected = expected_type
+        self.__expected = expected_types
 
     def __str__(self):
         return f'Variável de tipo "{self.__type}" não ' \
             'pode ser utilizada na expressão, ' \
-            f'era esperado um tipo "{self.__expected}"'
+            f'era esperado: "{self.__expected}"'
 
 class InvalidRange(Exception):
     def __str__(self):
         return f'Primeiro operando no laço "para" deve ser menor ' \
                 'ou igual que o segundo operando'
-

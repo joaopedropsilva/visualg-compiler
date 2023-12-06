@@ -20,10 +20,6 @@ verdadeiro,verdadeiro
 b,var
 =,atrib
 falso,falso
-leia,leia
-(,(
-c,var
-),)
 c,var
 =,atrib
 20,valor
@@ -32,3 +28,4 @@ a,var
 d,var
 =,atrib
 joao,msg
+fimalgoritmo,fimalgoritmo

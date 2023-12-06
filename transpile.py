@@ -16,9 +16,11 @@ class Transpiler:
     def transpile(self) -> str:
         self.__transpile_main_function()
         self.__transpile_declaration_section()
+        self.__transpile_remaining_code()
+
+        self.__output += keys["fimalgoritmo"]
 
         return self.__output
-
 
     def __transpile_main_function(self) -> None:
         token = self.__symbols[0][1]
@@ -44,9 +46,24 @@ class Transpiler:
                                                            self.__output)
         self.__symbols = self.__symbols[pos_read + 1:]
 
+    def __transpile_remaining_code(self) -> None:
+        pos = 0
+
+        while self.__symbols[pos][1] != "fimalgoritmo":
+            lexem, token = self.__symbols[pos][0], self.__symbols[pos][1]
+
+            match token:
+                case "atrib":
+                    variable = self.__symbols[pos - 1][0]
+                    self.__output += f"{variable} = "
+                    self.__output, pos = tr.translate_assignment(
+                                pos + 1, self.__symbols, self.__output)
+                case _:
+                    pos += 1
+
 
 def main() -> None:
-    transpiler = Transpiler(rd.read_symbols("simple"))
+    transpiler = Transpiler(rd.read_symbols("atribuicao"))
 
     output = transpiler.transpile()
 

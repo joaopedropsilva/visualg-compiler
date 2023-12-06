@@ -28,8 +28,8 @@ class InvalidTypeInExpression(Exception):
         self.__expected = expected_types
 
     def __str__(self):
-        return f'Variável de tipo "{self.__type}" não ' \
-            'pode ser utilizada na expressão, ' \
+        return f'Tipo "{self.__type}" não ' \
+            'pode ser utilizado na expressão, ' \
             f'era esperado: "{self.__expected}"'
 
 class InvalidRange(Exception):

@@ -36,3 +36,7 @@ class InvalidRange(Exception):
     def __str__(self):
         return f'Primeiro operando no laço "para" deve ser menor ' \
                 'ou igual que o segundo operando'
+
+class InvalidTypeInLoopControllers(Exception):
+    def __str__(self):
+        return f'É esperado um valor de tipo "inteiro" no controle do loop'

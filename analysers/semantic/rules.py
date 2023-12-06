@@ -37,3 +37,8 @@ class LoopRules:
     def is_last_operand_greater_than_first(cls, first: str, last: str):
         if int(first) > int(last):
             raise e.InvalidRange
+
+    @classmethod
+    def is_valid_loop_token(cls, token: str):
+        if token != "valor":
+            raise e.InvalidTypeInLoopControllers

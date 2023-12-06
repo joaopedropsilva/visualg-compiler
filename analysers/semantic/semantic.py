@@ -32,16 +32,14 @@ class Semantic:
 
             match token:
                 case "leia":
-                    pos = self.__analyse_variable_to_read(
-                            pos, symbols)
+                    pos = self.__analyse_variable_to_read(pos, symbols)
                 case "var":
                     pos = \
-                        self.__analyse_variable_assignment(
-                                pos, symbols)
+                        self.__analyse_variable_assignment(pos, symbols)
                 case "se":
                     pos = self.__analyse_conditional(pos, symbols)
                 case "para":
-                    pass
+                    pos = self.__analyse_loop(pos, symbols)
                 case _:
                     pos += 1
 
@@ -179,3 +177,39 @@ class Semantic:
         return self.__validate_logical_expression(first_operand_pos,
                                                   symbols,
                                                   allowed_types)
+    def __analyse_loop(self, pos: int, symbols: List[List[str]]) -> int:
+        allowed_types = ["inteiro"]
+        expression_pos = pos + 1
+        loop_begin = ""
+        loop_limit = ""
+
+        variable = symbols[expression_pos][0]
+        vr.is_type_valid(self.__variables[variable], allowed_types)
+
+        while True:
+            if expression_pos - pos > 9:
+                break
+
+            expression_pos += 1
+            token_in_expression = symbols[expression_pos][1]
+
+            if token_in_expression == "de":
+                next_token = symbols[expression_pos + 1][1]
+                lr.is_valid_loop_token(next_token)
+
+                loop_begin = symbols[expression_pos + 1][0]
+            elif token_in_expression == "ate":
+                next_token = symbols[expression_pos + 1][1]
+                lr.is_valid_loop_token(next_token)
+
+                loop_limit = symbols[expression_pos + 1][0]
+            elif token_in_expression == "passo":
+                next_token = symbols[expression_pos + 1][1]
+
+                lr.is_valid_loop_token(next_token)
+            elif token_in_expression == "faca":
+                break
+
+        lr.is_last_operand_greater_than_first(loop_begin, loop_limit)
+
+        return expression_pos

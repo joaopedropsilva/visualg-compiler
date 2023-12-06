@@ -1,5 +1,6 @@
 from typing import List
 
+from analysers.semantic.semantic import Semantic
 from resources.clang_keymap import keys
 from utils.readers import DataReader as rd
 from utils.translators import Translators as tr
@@ -9,8 +10,9 @@ from utils.translators import Translators as tr
 class Transpiler:
     __stdio_include = "#include <stdio.h>\n"
 
-    def __init__(self, symbols: List[List[str]]) -> None:
+    def __init__(self, symbols: List[List[str]], variables: dict) -> None:
         self.__symbols = symbols
+        self.__variables = variables
         self.__output = Transpiler.__stdio_include
 
     def transpile(self) -> str:
@@ -58,17 +60,30 @@ class Transpiler:
                     self.__output += f"{variable} = "
                     self.__output, pos = tr.translate_assignment(
                                 pos + 1, self.__symbols, self.__output)
+                case "leia":
+                    variable = self.__symbols[pos + 2][1]
+                    var_type = keys[self.__variables[variable]]
+
+                    self.__output += 'scanf("'
+                    self.__output = tr.translate_input_command(variable, var_type, self.__output)
+
+                    pos += 4
                 case _:
                     pos += 1
 
 
 def main() -> None:
-    transpiler = Transpiler(rd.read_symbols("atribuicao"))
+    symbols = rd.read_symbols("leia")
+    se = Semantic(symbols)
+    variables = se.analyse()
+
+    transpiler = Transpiler(symbols, variables)
 
     output = transpiler.transpile()
 
     with open("code.c", "w") as file:
         file.write(output)
+
 
 if __name__ == "__main__":
     main()

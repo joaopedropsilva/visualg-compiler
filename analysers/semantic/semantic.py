@@ -18,7 +18,7 @@ class Semantic:
         self.__variable_declaration = False
         self.__last_variable = ""
 
-    def analyse(self) -> None:
+    def analyse(self) -> dict:
         self.__read_variables()
 
         program_start = self.__symbols.index(["inicio", "inicio"])
@@ -42,6 +42,8 @@ class Semantic:
                     pos = self.__analyse_loop(pos, symbols)
                 case _:
                     pos += 1
+
+        return self.__variables
 
     """
         Função que percorre uma lista de símbolos e popula

@@ -1,0 +1,16 @@
+algoritmo,algoritmo
+var,var
+a,var
+inteiro,inteiro
+b,var
+logico,logico
+c,var
+real,real
+d,var
+caractere,caractere
+inicio,inicio
+leia,leia
+(,(
+c,var
+),)
+fimalgoritmo,fimalgoritmo

@@ -71,4 +71,17 @@ class Translators:
         output, pos = cls.__translate_expression(pos + 1, symbols, output)
         return output, pos
 
+    @classmethod
+    def translate_input_command(cls,
+                                variable: str,
+                                var_type: str,
+                                output: str) -> str:
+        match var_type:
+            case "int":
+                output += f'%d", &{variable});\n'
+            case "float":
+                output += f'%f", &{variable});\n'
+            case "char*":
+                output += f'%s", {variable});\n'
 
+        return output

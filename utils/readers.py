@@ -1,5 +1,8 @@
+import os
+
 class DataReader:
     @classmethod
-    def read_from_file(cls, path: str):
-        with open(path, "r") as file:
-            return file.readlines()
+    def read_symbols(cls, filename: str):
+        with open(f"{os.getcwd()}/examples/{filename}.txt", "r") as file:
+            return list(map(lambda x: x.replace("\n", "").split(','),
+                               file.readlines()))

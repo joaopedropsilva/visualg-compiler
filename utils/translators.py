@@ -85,3 +85,35 @@ class Translators:
                 output += f'%s", {variable});\n'
 
         return output
+
+    @classmethod
+    def translate_conditional(cls,
+                              pos: int,
+                              symbols: List[List[str]],
+                              output: str) -> Tuple[str, int]:
+        return cls.__translate_logical_expression(pos, symbols, output)
+
+    @classmethod
+    def __translate_logical_expression(cls,
+                                       pos: int,
+                                       symbols: List[List[str]],
+                                       output: str) -> Tuple[str, int]:
+        lexem, token = symbols[pos][0], symbols[pos][1]
+
+        if token == "entao":
+            output += keys[token]
+
+            return output, pos
+
+        if token in non_numeric_expressions:
+            output += f"{keys[token]} "
+
+            output, pos = cls.__translate_logical_expression(pos + 1, symbols, output)
+            return output, pos
+
+        output += f"{lexem} "
+
+        output, pos = cls.__translate_logical_expression(pos + 1, symbols, output)
+        return output, pos
+
+

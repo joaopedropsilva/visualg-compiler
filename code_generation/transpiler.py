@@ -65,5 +65,16 @@ class Transpiler:
                     self.__output = tr.translate_input_command(variable, var_type, self.__output)
 
                     pos += 3
+                case "se":
+                    self.__output += keys["se"]
+                    self.__output, pos = tr.translate_conditional(pos + 2, self.__symbols, self.__output)
+                case "senao":
+                    self.__output += keys["senao"]
+
+                    pos += 1
+                case "fimse":
+                    self.__output += keys["fimse"]
+
+                    pos += 1
                 case _:
                     pos += 1

@@ -7,8 +7,9 @@ keys = {
     "caractere":"char*",
     "verdadeiro": "1",
     "falso": "0",
-    "se":"if ",
+    "se":"if ( ",
     "entao":"{\n",
     "senao":"} else {\n",
+    "fimse": "}\n",
     "para":"for ("
 }

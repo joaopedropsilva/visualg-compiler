@@ -54,7 +54,9 @@ class Translators:
             return output, pos
 
         if token == "op_arit"\
-                or token == "valor":
+                or token == "valor"\
+                or token == "("\
+                or token == ")":
             output += f"{lexem} "
 
             output, pos = cls.__translate_expression(pos + 1, symbols, output)

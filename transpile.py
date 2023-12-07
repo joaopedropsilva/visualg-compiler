@@ -61,19 +61,21 @@ class Transpiler:
                     self.__output, pos = tr.translate_assignment(
                                 pos + 1, self.__symbols, self.__output)
                 case "leia":
-                    variable = self.__symbols[pos + 2][1]
+                    variable = self.__symbols[pos + 2][0]
                     var_type = keys[self.__variables[variable]]
 
                     self.__output += 'scanf("'
                     self.__output = tr.translate_input_command(variable, var_type, self.__output)
 
-                    pos += 4
+                    pos += 3
                 case _:
                     pos += 1
 
 
 def main() -> None:
-    symbols = rd.read_symbols("leia")
+    filename = "atribuicao"
+
+    symbols = rd.read_symbols(filename)
     se = Semantic(symbols)
     variables = se.analyse()
 
@@ -81,7 +83,7 @@ def main() -> None:
 
     output = transpiler.transpile()
 
-    with open("code.c", "w") as file:
+    with open(f"{filename}.c", "w") as file:
         file.write(output)
 
 

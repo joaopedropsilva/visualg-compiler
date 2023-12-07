@@ -99,8 +99,8 @@ class Semantic:
 
         if token == "var":
             prev_token = symbols[pos - 1][1]
-            if  prev_token != "op_arit":
-                return pos
+            if prev_token != "op_arit":
+                return pos + 1
 
             vr.is_type_valid(self.__variables[lexem], expected_types)
 
@@ -124,13 +124,12 @@ class Semantic:
         vr.exists(variable_found, self.__variables)
 
 
-        next_token_pos = pos + 2
         allowed_types_in_expression = [self.__variables[variable_found]]
 
         if "real" in allowed_types_in_expression:
             allowed_types_in_expression.append("inteiro")
 
-        return self.__validate_assignment_expression(next_token_pos,
+        return self.__validate_assignment_expression(pos,
                                           symbols,
                                           allowed_types_in_expression)
 

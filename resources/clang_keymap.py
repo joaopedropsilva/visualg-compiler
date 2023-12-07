@@ -11,5 +11,7 @@ keys = {
     "entao":"{\n",
     "senao":"} else {\n",
     "fimse": "}\n",
-    "para":"for ("
+    "para":"for ( ",
+    "faca": " ) {\n",
+    "fimpara": "}\n"
 }

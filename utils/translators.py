@@ -118,4 +118,25 @@ class Translators:
         output, pos = cls.__translate_logical_expression(pos + 1, symbols, output)
         return output, pos
 
+    @classmethod
+    def translate_loop(cls,
+                       pos: int,
+                       symbols: List[List[str]],
+                       output: str) -> Tuple[str, int]:
+        variable = symbols[pos + 1][0]
 
+        while True:
+            lexem, token = symbols[pos][0], symbols[pos][1]
+
+            match token:
+                case "faca":
+                    output += f'{variable}++ {keys[token]}'
+                    break
+                case "valor":
+                    output += f"{lexem}; "
+                case "ate":
+                    output += f"{variable} < "
+
+            pos += 1
+
+        return output, pos

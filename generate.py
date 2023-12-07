@@ -4,7 +4,7 @@ from utils.readers import DataReader as rd
 
 
 def main() -> None:
-    filename = "atribuicao"
+    filename = "complete"
 
     symbols = rd.read_symbols(filename)
 

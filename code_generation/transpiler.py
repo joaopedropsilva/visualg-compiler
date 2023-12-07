@@ -76,5 +76,14 @@ class Transpiler:
                     self.__output += keys["fimse"]
 
                     pos += 1
+                case "para":
+                    variable = self.__symbols[pos + 1][0]
+
+                    self.__output += f"{keys['para']} {variable} = "
+                    self.__output, pos = tr.translate_loop(pos, self.__symbols, self.__output)
+                case "fimpara":
+                    self.__output += keys["fimpara"]
+
+                    pos += 1
                 case _:
                     pos += 1

@@ -69,9 +69,5 @@ a,var
 -,op_arit
 1,valor
 ),)
-escreva,escreva
-(,(
-a,var
-),)
 fimpara,fimpara
 fimalgoritmo,fimalgoritmo

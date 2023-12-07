@@ -11,6 +11,14 @@ caractere,caractere
 inicio,inicio
 leia,leia
 (,(
+a,var
+),)
+leia,leia
+(,(
 c,var
+),)
+leia,leia
+(,(
+d,var
 ),)
 fimalgoritmo,fimalgoritmo

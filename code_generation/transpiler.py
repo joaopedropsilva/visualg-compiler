@@ -1,10 +1,7 @@
 from typing import List
 
-from analysers.semantic.semantic import Semantic
 from resources.clang_keymap import keys
-from utils.readers import DataReader as rd
 from utils.translators import Translators as tr
-
 
 
 class Transpiler:
@@ -70,23 +67,3 @@ class Transpiler:
                     pos += 3
                 case _:
                     pos += 1
-
-
-def main() -> None:
-    filename = "atribuicao"
-
-    symbols = rd.read_symbols(filename)
-    se = Semantic(symbols)
-    variables = se.analyse()
-
-    transpiler = Transpiler(symbols, variables)
-
-    output = transpiler.transpile()
-
-    with open(f"{filename}.c", "w") as file:
-        file.write(output)
-
-
-if __name__ == "__main__":
-    main()
-

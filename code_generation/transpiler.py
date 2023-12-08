@@ -1,10 +1,15 @@
 from typing import List
 
 from resources.clang_keymap import keys
-from utils.translators import Translators as tr
+from .translators import Translators as tr
 
 
 class Transpiler:
+    """
+        Classe responsável pela transpilação do
+        código visualg em um código C
+    """
+
     __stdio_include = "#include <stdio.h>\n"
 
     def __init__(self, symbols: List[List[str]], variables: dict) -> None:
@@ -13,6 +18,11 @@ class Transpiler:
         self.__output = Transpiler.__stdio_include
 
     def transpile(self) -> str:
+        """
+            Função principal responsável pela geração de
+            código de cada seção do código em visualg
+        """
+
         self.__transpile_main_function()
         self.__transpile_declaration_section()
         self.__transpile_remaining_code()
@@ -22,6 +32,11 @@ class Transpiler:
         return self.__output
 
     def __transpile_main_function(self) -> None:
+        """
+            função que transforma o início do código
+            numa função main em c válida
+        """
+
         token = self.__symbols[0][1]
 
         if token != "algoritmo":
@@ -31,6 +46,11 @@ class Transpiler:
         self.__symbols.pop(0)
 
     def __transpile_declaration_section(self) -> None:
+        """
+            Função que transforma a seção de
+            declaração de variáveis em variáveis em C
+        """
+
         lexem, token = self.__symbols[0][0], self.__symbols[0][1]
 
         if token != "var":
@@ -46,10 +66,14 @@ class Transpiler:
         self.__symbols = self.__symbols[pos_read + 1:]
 
     def __transpile_remaining_code(self) -> None:
+        """
+            Função que transforma o resto do código
+        """
+
         pos = 0
 
         while self.__symbols[pos][1] != "fimalgoritmo":
-            lexem, token = self.__symbols[pos][0], self.__symbols[pos][1]
+            token = self.__symbols[pos][0], self.__symbols[pos][1]
 
             match token:
                 case "atrib":

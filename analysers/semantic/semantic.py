@@ -9,7 +9,8 @@ from resources.keywords import (
 
 class Semantic:
     """
-        Classe responsável pela análise semântica do código
+        Classe responsável pela
+        análise semântica do código
     """
 
     def __init__(self, symbols: List[List[str]]) -> None:
@@ -19,6 +20,11 @@ class Semantic:
         self.__last_variable = ""
 
     def analyse(self) -> dict:
+        """
+            Função principal que executa todas
+            as fases da análise semântica
+        """
+
         self.__read_variables()
 
         program_start = self.__symbols.index(["inicio", "inicio"])
@@ -45,11 +51,12 @@ class Semantic:
 
         return self.__variables
 
-    """
-        Função que percorre uma lista de símbolos e popula
-        um dict com as variáveis válidas declaradas
-    """
     def __read_variables(self) -> None:
+        """
+            Função que percorre uma lista de símbolos e popula
+            um dict com as variáveis válidas declaradas
+        """
+
         for symbol in self.__symbols:
             lexem, token = symbol[0], symbol[1]
 
@@ -74,6 +81,11 @@ class Semantic:
     def __analyse_variable_to_read(self,
                                    pos: int,
                                    symbols: List[List[str]]) -> int:
+        """
+            Função que verifica se uma variável
+            encontrada é passível de leitura
+        """
+
         variable_pos = pos + 2
         variable = symbols[variable_pos][0]
 
@@ -82,10 +94,38 @@ class Semantic:
 
         return pos + 2
 
+    def __analyse_variable_assignment(
+            self,
+            pos: int,
+            symbols: List[List[str]]) -> int:
+        """
+            Função que verifica se uma
+            atribuição de variável é válida
+        """
+
+        variable_found = symbols[pos][0]
+
+        vr.exists(variable_found, self.__variables)
+
+
+        allowed_types_in_expression = [self.__variables[variable_found]]
+
+        if "real" in allowed_types_in_expression:
+            allowed_types_in_expression.append("inteiro")
+
+        return self.__validate_assignment_expression(pos,
+                                          symbols,
+                                          allowed_types_in_expression)
+
     def __validate_assignment_expression(self,
                               pos: int,
                               symbols: List[List[str]],
                               expected_types: List[str]) -> int:
+        """
+            Função recursiva que valida
+            a expressão de atribuição de variáveis
+        """
+
         lexem, token = symbols[pos][0], symbols[pos][1]
 
         if token in non_numeric_expressions:
@@ -115,28 +155,40 @@ class Semantic:
         return self.__validate_assignment_expression(next_token_pos,
                                           symbols, expected_types)
 
-    def __analyse_variable_assignment(
-            self,
-            pos: int,
-            symbols: List[List[str]]) -> int:
-        variable_found = symbols[pos][0]
+    def __analyse_conditional(self, pos: int, symbols: List[List[str]]) -> int:
+        """
+            Função que verifica se uma
+            estrutura condicional é válida
+        """
 
-        vr.exists(variable_found, self.__variables)
+        allowed_types = ["logico"]
 
+        expression_pos = pos + 2
+        while True:
+            expression_pos += 1
+            token_in_expression = symbols[expression_pos][1]
 
-        allowed_types_in_expression = [self.__variables[variable_found]]
+            if token_in_expression == "entao":
+                break
+            elif token_in_expression == "compara":
+                allowed_types = ["inteiro", "real"]
+                break
 
-        if "real" in allowed_types_in_expression:
-            allowed_types_in_expression.append("inteiro")
+        first_operand_pos = pos + 2
 
-        return self.__validate_assignment_expression(pos,
-                                          symbols,
-                                          allowed_types_in_expression)
+        return self.__validate_logical_expression(first_operand_pos,
+                                                  symbols,
+                                                  allowed_types)
 
     def __validate_logical_expression(self,
                               pos: int,
                               symbols: List[List[str]],
                               expected_types: List[str]) -> int:
+        """
+            Função recursiva que valida a
+            expressão lógica de uma condicional
+        """
+
         lexem, token = symbols[pos][0], symbols[pos][1]
 
         if token in non_numeric_expressions:
@@ -159,26 +211,12 @@ class Semantic:
                                                   symbols,
                                                   expected_types)
 
-    def __analyse_conditional(self, pos: int, symbols: List[List[str]]) -> int:
-        allowed_types = ["logico"]
-
-        expression_pos = pos + 2
-        while True:
-            expression_pos += 1
-            token_in_expression = symbols[expression_pos][1]
-
-            if token_in_expression == "entao":
-                break
-            elif token_in_expression == "compara":
-                allowed_types = ["inteiro", "real"]
-                break
-
-        first_operand_pos = pos + 2
-
-        return self.__validate_logical_expression(first_operand_pos,
-                                                  symbols,
-                                                  allowed_types)
     def __analyse_loop(self, pos: int, symbols: List[List[str]]) -> int:
+        """
+            Função que verifica se uma
+            estrutura de repetição é válida
+        """
+
         allowed_types = ["inteiro"]
         expression_pos = pos + 1
         loop_begin = ""

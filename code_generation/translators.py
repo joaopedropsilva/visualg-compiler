@@ -1,12 +1,25 @@
 from typing import List, Tuple
+
 from resources.clang_keymap import keys
-from resources.keywords import valid_tokens_for_variable_assignment, non_numeric_expressions
+from resources.keywords import (
+    valid_tokens_for_variable_assignment,
+    non_numeric_expressions
+)
 
 class Translators:
+    """
+        Classe acessória a transpilação de código
+    """
+
     @classmethod
     def translate_declaration(cls,
                               symbols: List[List[str]],
                               output: str) -> Tuple[str, int]:
+        """
+            Função responsável por traduzir uma 
+            declaração de variável em uma declaração em C
+        """
+
         pos = 0
         while True:
             lexem, token = symbols[pos][0], symbols[pos][1]
@@ -26,6 +39,11 @@ class Translators:
                              pos: int,
                              symbols: List[List[str]],
                              output: str) -> Tuple[str, int]:
+        """
+            Função responsável por traduzir uma 
+            atribuição de variável em uma atribuição em C
+        """
+
         return cls.__translate_expression(pos, symbols, output)
         
     @classmethod
@@ -78,6 +96,11 @@ class Translators:
                                 variable: str,
                                 var_type: str,
                                 output: str) -> str:
+        """
+            Função responsável por traduzir um 
+            comando de leitura em C
+        """
+
         match var_type:
             case "int":
                 output += f'%d", &{variable});\n'
@@ -93,6 +116,11 @@ class Translators:
                               pos: int,
                               symbols: List[List[str]],
                               output: str) -> Tuple[str, int]:
+        """
+            Função responsável por
+            traduzir uma condicional em C
+        """
+
         return cls.__translate_logical_expression(pos, symbols, output)
 
     @classmethod
@@ -123,6 +151,11 @@ class Translators:
                        pos: int,
                        symbols: List[List[str]],
                        output: str) -> Tuple[str, int]:
+        """
+            Função responsável por traduzir uma 
+            estrutura de repetição em C
+        """
+
         variable = symbols[pos + 1][0]
 
         while True:

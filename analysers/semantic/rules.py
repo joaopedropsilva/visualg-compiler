@@ -6,7 +6,7 @@ from resources.keywords import types
 
 class VariableRules:
     """
-        Classe mantenedora das regras
+        Classe mantenedora das regras de variáveis
         utilizadas pela análise semântica
     """
     @classmethod
@@ -33,6 +33,10 @@ class VariableRules:
             raise e.InvalidTypeInExpression(received_type, expected_types)
 
 class LoopRules:
+    """
+        Classe mantenedora das regras de loops
+        utilizadas pela análise semântica
+    """
     @classmethod
     def is_last_operand_greater_than_first(cls, first: str, last: str):
         if int(first) > int(last):
